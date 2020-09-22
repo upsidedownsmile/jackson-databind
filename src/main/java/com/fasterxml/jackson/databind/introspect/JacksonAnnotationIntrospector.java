@@ -564,7 +564,10 @@ public class JacksonAnnotationIntrospector
          */
         // 17-Apr-2016, tatu: For 2.7.4 make sure ReferenceType also included
         if (baseType.isContainerType() || baseType.isReferenceType()) {
-            return null;
+            JsonTypeInfo info = _findAnnotation(am, JsonTypeInfo.class);
+            if(info == null || info.applyTo() == JsonTypeInfo.ApplyTo.ELEMENTS) {
+                return null;
+            }
         }
         // No per-member type overrides (yet)
         return _findTypeResolver(config, am, baseType);
@@ -579,6 +582,11 @@ public class JacksonAnnotationIntrospector
          */
         if (containerType.getContentType() == null) {
             throw new IllegalArgumentException("Must call method with a container or reference type (got "+containerType+")");
+        } else {
+            JsonTypeInfo info = _findAnnotation(am, JsonTypeInfo.class);
+            if(info != null && info.applyTo() == JsonTypeInfo.ApplyTo.VALUE) {
+                return null;
+            }
         }
         return _findTypeResolver(config, am, containerType);
     }

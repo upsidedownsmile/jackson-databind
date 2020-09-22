@@ -86,7 +86,7 @@ public class AnnotatedClassResolver
         if (forType.isArrayType() && skippableArray(config, forType.getRawClass())) {
             return createArrayType(config, forType.getRawClass());
         }
-        return new AnnotatedClassResolver(config, forType, r).resolveFully();
+         return new AnnotatedClassResolver(config, forType, r).resolveFully();
     }
 
     public static AnnotatedClass resolveWithoutSuperTypes(MapperConfig<?> config, Class<?> forType) {
